@@ -31,4 +31,6 @@ All sample content lives in `src/data/catalog.js`. Colours are CSS variables at 
 
 ## Deploy
 
-`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every push to `main` or the prototype branch. One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
+`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every push to `main` or the prototype branch. One-time setup: repo **Settings → Pages → Build and deployment → Source: GitHub Actions**. Do not use "Deploy from a branch": it publishes the unbuilt source and the page shows blank.
+
+Live URL: https://salesteam-create.github.io/bestona-mazon/
