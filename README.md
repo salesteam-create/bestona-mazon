@@ -1,22 +1,23 @@
 # Bestona Mazon: concept prototype
 
-Clickable front-end prototype for an Amazon product discovery site (top 10 per category, with a clearly labelled Featured Pick slot). Built from the scope document *Concept Prototype: Scope Document, Draft v0.1*.
+Clickable, Amazon-style marketplace prototype showing the Top 10 products in each department, with one clearly labelled Sponsored "Featured Pick" per department. Every buy button links out to Amazon (shown as a notice in the prototype).
 
-The UI uses a placeholder brand ("Shortlist") and a neutral palette until the naming decision is made. All products, brands, prices and ratings are invented sample data.
+Brand colours come from the Bestona Mazon logo (amber `#f9ac1f` and black). The logo is recreated in code (`LogoMark` in `src/components.jsx`). All brands, products, prices and ratings are invented sample data.
 
 ## Pages
 
 | Route | Page |
 | --- | --- |
-| `#/` | Home: hero, Shop by Category grid, featured picks, trust line, newsletter (visual) |
-| `#/c/kitchen`, `#/c/pet-supplies`, `#/c/coffee-tea` | Category: Featured Pick card, independent Top 10, sort and price filter, related categories |
-| `#/p/k1`, `#/p/p1`, `#/p/c1` | Product summary template (populated for the #1 product in each category) |
-| `#/search?q=...` | Search over the 33 sample products |
-| `#/how-we-pick` | Methodology and how Featured Picks work |
-| `#/disclosure` | Affiliate disclosure, privacy and cookie placeholders |
+| `#/` | Home: banner carousel, Top 10 cards per department, Sponsored row, deals row, department rows |
+| `#/c/<slug>` | Department: Featured Pick plus Top 10 grid, filters (reviews, price, deals, brand), sort |
+| `#/p/<id>` | Product: gallery, rank, price, why it made the list, buy box, comparison table |
+| `#/search?q=...&cat=...` | Search across all 66 sample products, optionally within a department |
+| `#/deals` | Today's Deals (ranked products with a price drop) |
+| `#/saved` | Saved list (stored in the browser only) |
+| `#/how-we-pick`, `#/disclosure` | Methodology, sponsored placements, affiliate disclosure |
 | `#/admin` | Featured slot admin, wireframe only |
 
-"Check price on Amazon" buttons show a notice instead of leaving the site.
+Departments: `kitchen`, `pet-supplies`, `coffee-tea`, `home`, `beauty`, `sports`.
 
 ## Run locally
 

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import { Breadcrumbs, FeaturedBadge } from '../components.jsx'
+import { Breadcrumbs } from '../components.jsx'
 
 export function HowWePick() {
   return (
-    <div className="wrap page prose">
+    <div className="page page-inner prose">
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'How we pick' }]} />
       <h1>How we pick</h1>
       <p className="lead">Every list is built the same way, so you can judge it for yourself.</p>
@@ -28,10 +28,10 @@ export function HowWePick() {
       </ol>
 
       <h2 id="featured">How Featured Picks work</h2>
-      <p><FeaturedBadge /></p>
+      <p><span className="ribbon ribbon-sp inline">Featured Pick</span> <span className="sponsored-text">Sponsored</span></p>
       <p>
         Some brands pay to appear as a Featured Pick at the top of a category. Featured Picks are always labelled,
-        shown in a separate card above the list, and are never counted in the independent Top 10. Paying for a Featured
+        shown in the first slot of each department, separate from the ranked products, and are never counted in the independent Top 10. Paying for a Featured
         Pick does not change a product's position in the rankings.
       </p>
 
@@ -46,7 +46,7 @@ export function HowWePick() {
 
 export function Disclosure() {
   return (
-    <div className="wrap page prose">
+    <div className="page page-inner prose">
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Disclosure and legal' }]} />
       <h1>Disclosure and legal</h1>
       <p className="notice">Placeholder copy for the prototype. Final wording needs legal review.</p>
@@ -57,7 +57,7 @@ export function Disclosure() {
         may earn a commission. This does not change the price you pay.
       </p>
       <p>
-        Featured Picks are paid placements from brands we work with. They are labelled "Featured Pick · Sponsored"
+        Featured Picks are paid placements from brands we work with. They are labelled "Featured Pick" and "Sponsored"
         and sit outside the independent rankings.
       </p>
 

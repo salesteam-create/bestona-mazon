@@ -10,7 +10,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="wrap page wf">
+    <div className="page page-inner wf">
       <div className="wf-banner">
         <strong>Concept wireframe</strong> · Featured slot admin. Not functional in the prototype.
       </div>
@@ -19,9 +19,9 @@ export default function Admin() {
       <p className="muted">Assign a seller client's product to a category's Featured Pick slot and track clicks.</p>
 
       <div className="wf-stats">
-        <div className="wf-box"><span className="wf-label">Active slots</span><strong>3 / 3</strong></div>
-        <div className="wf-box"><span className="wf-label">Clicks (30 days)</span><strong>3,793</strong></div>
-        <div className="wf-box"><span className="wf-label">Avg. click-through</span><strong>6.4%</strong></div>
+        <div className="wf-box"><span className="wf-label">Active slots</span><strong>6 / 6</strong></div>
+        <div className="wf-box"><span className="wf-label">Clicks (30 days)</span><strong>6,696</strong></div>
+        <div className="wf-box"><span className="wf-label">Avg. click-through</span><strong>5.8%</strong></div>
       </div>
 
       <div className="wf-layout">

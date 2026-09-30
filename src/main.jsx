@@ -1,11 +1,11 @@
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { Layout, ToastProvider } from './components.jsx'
+import { Layout, ToastProvider, SavedProvider } from './components.jsx'
 import Home from './pages/Home.jsx'
 import Category from './pages/Category.jsx'
 import Product from './pages/Product.jsx'
-import Search from './pages/Search.jsx'
+import Search, { Deals, Saved } from './pages/Search.jsx'
 import Admin from './pages/Admin.jsx'
 import NotFound from './pages/NotFound.jsx'
 import { HowWePick, Disclosure } from './pages/Static.jsx'
@@ -23,18 +23,22 @@ createRoot(document.getElementById('root')).render(
     <HashRouter>
       <ScrollToTop />
       <ToastProvider>
+        <SavedProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/c/:slug" element={<Category />} />
             <Route path="/p/:id" element={<Product />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/deals" element={<Deals />} />
+            <Route path="/saved" element={<Saved />} />
             <Route path="/how-we-pick" element={<HowWePick />} />
             <Route path="/disclosure" element={<Disclosure />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
+        </SavedProvider>
       </ToastProvider>
     </HashRouter>
   </StrictMode>,
