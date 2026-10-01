@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom'
 import { DEPARTMENTS, LIVE_SUBS, ALL_SUBS, UPDATED, subBySlug } from '../data/catalog.js'
 import { DeptCircle, DeptCard, ListCard, Photo, DisclosureNote } from '../components.jsx'
 
+// In-page jumps use scrollIntoView: a plain "#id" link would be read as a route by the hash router.
+const jumpTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
 export default function Home() {
   const spotlight = subBySlug('air-fryers')
   return (
@@ -14,7 +17,7 @@ export default function Home() {
             <p>We narrow Amazon's bestsellers down to ten, and tell you why each one made the list. No endless scrolling.</p>
           </div>
           <div className="hero-actions">
-            <a href="#departments" className="pill pill-dark pill-lg">Browse categories</a>
+            <button type="button" className="pill pill-dark pill-lg" onClick={() => jumpTo('departments')}>Browse categories</button>
             <Link to="/how-we-pick" className="pill pill-outline pill-lg">How we pick</Link>
           </div>
         </div>
@@ -39,7 +42,7 @@ export default function Home() {
       <section className="block" id="departments">
         <div className="block-head">
           <h2>Shop by category</h2>
-          <a href="#all-departments" className="u-link">All departments</a>
+          <button type="button" className="u-link link-btn" onClick={() => jumpTo('all-departments')}>All departments</button>
         </div>
         <div className="circles">
           {DEPARTMENTS.map((d) => <DeptCircle key={d.slug} dept={d} />)}

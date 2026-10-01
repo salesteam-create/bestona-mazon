@@ -26,7 +26,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-padding-top: 140px; }
 body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 a { color: var(--ink); text-decoration: none; }
 a:hover { color: var(--amber-ink); }
@@ -36,6 +36,7 @@ button, input, select { font: inherit; color: inherit; }
 .soft { color: var(--soft); }
 .small { font-size: 13px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.link-btn { background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink); }
 .u-link { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; font-size: 15px; }
 .amber-link { color: var(--amber); font-weight: 600; }
 .mono-chip { background: var(--ink); color: var(--amber); font-family: var(--mono); font-size: 13px; padding: 5px 12px; border-radius: 999px; white-space: nowrap; }
