@@ -23,7 +23,7 @@ export default function Home() {
         </div>
         <div className="hero-side">
           <Link to={`/list/${spotlight.slug}`} className="hero-panel hero-photo">
-            <Photo item={spotlight} label="lifestyle photo" className="hero-photo-bg" />
+            <Photo item={{ image: 'images/hero.jpg' }} label="lifestyle photo" className="hero-photo-bg" />
             <span className="hero-panel-text">
               <strong>New list: {spotlight.title.replace('The 10 best', 'the 10 best')}</strong>
               <span>Basket size, even cooking and easy cleaning, compared</span>

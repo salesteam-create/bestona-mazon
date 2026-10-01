@@ -4,7 +4,7 @@
 //
 // Structure: department > subcategory > Top 10 list. Products only appear
 // inside a subcategory list, never on home or department pages.
-// `image` fields are optional; without one, an illustrated placeholder shows.
+// Photos are sample stock images from Unsplash (public/images), named by slug or product id.
 
 export const BRAND = {
   name: 'Bestona Mazon',
@@ -277,17 +277,15 @@ const DEPTS = [
     subs: [['water-bottles', 'Water Bottles', 'bottle'], ['yoga-mats', 'Yoga Mats', 'mat'], ['dumbbells', 'Dumbbells', 'dumbbell'], ['fitness-trackers', 'Fitness Trackers', 'watch']] },
 ]
 
-const HUES = [210, 20, 150, 280, 40, 190, 330, 100, 250, 0]
-
 export const DEPARTMENTS = DEPTS.map((d) => {
-  const dept = { slug: d.slug, name: d.name, icon: d.icon, intro: d.intro }
+  const dept = { slug: d.slug, name: d.name, icon: d.icon, intro: d.intro, image: `images/dept-${d.slug}.jpg` }
   dept.subcategories = d.subs.map(([slug, name, icon]) => {
-    const sub = { slug, name, icon, department: dept, live: Boolean(LISTS[slug]) }
+    const sub = { slug, name, icon, department: dept, live: Boolean(LISTS[slug]), image: `images/cat-${slug}.jpg` }
     const list = LISTS[slug]
     if (list) {
       Object.assign(sub, { title: list.title, intro: list.intro })
-      sub.featured = { ...list.featured, icon, hue: 40, rank: 0, sponsored: true, list: sub }
-      sub.products = list.products.map((prod, i) => ({ ...prod, icon, hue: HUES[i], rank: i + 1, list: sub }))
+      sub.featured = { ...list.featured, image: `images/${list.featured.id}.jpg`, rank: 0, sponsored: true, list: sub }
+      sub.products = list.products.map((prod, i) => ({ ...prod, image: `images/${prod.id}.jpg`, rank: i + 1, list: sub }))
     }
     return sub
   })
@@ -300,6 +298,10 @@ export const LIVE_SUBS = ALL_SUBS.filter((s) => s.live)
 export const subBySlug = (slug) => ALL_SUBS.find((s) => s.slug === slug)
 export const ALL_PRODUCTS = LIVE_SUBS.flatMap((s) => [s.featured, ...s.products])
 export const productById = (id) => ALL_PRODUCTS.find((x) => x.id === id)
+
+// Where "Buy now" goes. Sample products link to an Amazon search for the product
+// type; in the full build this is the product's affiliate link from the Creators API.
+export const amazonUrl = (product) => product.url || `https://www.amazon.com/s?k=${encodeURIComponent(product.list.name)}`
 
 // Concept data for the admin wireframe.
 export const ADMIN_SLOTS = LIVE_SUBS.map((s, i) => ({

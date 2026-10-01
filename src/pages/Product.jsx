@@ -19,7 +19,7 @@ export default function Product() {
         <Link to={`/d/${dept.slug}`}>{dept.name}</Link> › <Link to={`/list/${sub.slug}`}>{sub.name}</Link>
       </div>
       <div className="pd">
-        <div className="pd-img"><Photo item={product} label="main product shot" /></div>
+        <div className="pd-img"><Photo item={product} label="main product shot" tag="Sample photo" /></div>
         <div className="pd-info">
           {product.sponsored ? <SponsoredTag /> : <span className="rank-chip">#{product.rank} in {sub.name} · {product.label}</span>}
           <span className="brand-link">{product.brand}</span>
@@ -34,7 +34,7 @@ export default function Product() {
         </div>
         <aside className="pd-box" aria-label="Where to buy">
           <span className="pd-price">${product.price.toFixed(2)}</span>
-          <span className="soft small">Price on Amazon as of {UPDATED}. Prices change, so check the latest on Amazon.</span>
+          <span className="soft small">Price on Amazon as of {UPDATED}. You'll complete your purchase on Amazon.</span>
           <AmazonLink product={product} block />
           <div className="rule" />
           <div className="pd-facts">

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, useRef } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
-import { BRAND, DEPARTMENTS, UPDATED } from './data/catalog.js'
+import { BRAND, DEPARTMENTS, UPDATED, amazonUrl } from './data/catalog.js'
 
 /* ---------- Toast (stands in for outbound Amazon links) ---------- */
 
@@ -25,15 +25,16 @@ export function ToastProvider({ children }) {
 export const useToast = () => useContext(ToastContext)
 
 export function AmazonLink({ product, block, size }) {
-  const toast = useToast()
   return (
-    <button
-      type="button"
+    <a
+      href={amazonUrl(product)}
+      target="_blank"
+      rel="nofollow sponsored noopener noreferrer"
       className={`pill pill-amber ${block ? 'pill-block' : ''} ${size === 'sm' ? 'pill-sm' : ''}`}
-      onClick={() => toast(`Prototype: in the live site this goes straight to "${product.name}" on Amazon.`)}
+      aria-label={`Buy now on Amazon: ${product.name} (opens in a new tab)`}
     >
-      <span className="lbl-long">Check price on Amazon</span><span className="lbl-short">See on Amazon</span> <span aria-hidden="true">↗</span>
-    </button>
+      Buy now <span aria-hidden="true">↗</span>
+    </a>
   )
 }
 
@@ -41,9 +42,10 @@ export function AmazonLink({ product, block, size }) {
 
 const src = (path) => `${import.meta.env.BASE_URL}${path}`
 
-export function Photo({ item, label, shape = 'square', className = '' }) {
+export function Photo({ item, label, shape = 'square', className = '', tag }) {
   if (item?.image) {
-    return <img className={`photo photo-${shape} ${className}`} src={src(item.image)} alt="" loading="lazy" />
+    const img = <img className={`photo photo-${shape} ${className}`} src={src(item.image)} alt="" loading="lazy" />
+    return tag ? <span className="photo-wrap">{img}<span className="photo-tag">{tag}</span></span> : img
   }
   return (
     <div className={`ph ph-${shape} ${className}`} role="img" aria-label={`Photo placeholder: ${label}`}>
@@ -156,7 +158,7 @@ export function FeaturedBlock({ product }) {
         <span className="soft small">Paid placement · outside the ranking</span>
       </div>
       <div className="feat-inner">
-        <Link to={`/p/${product.id}`} className="feat-img"><Photo item={product} label="product shot" /></Link>
+        <Link to={`/p/${product.id}`} className="feat-img"><Photo item={product} label="product shot" tag="Sample photo" /></Link>
         <div className="feat-body">
           <span className="brand-link">{product.brand}</span>
           <h2><Link to={`/p/${product.id}`}>{product.name}</Link></h2>
@@ -177,7 +179,7 @@ export function RankedItem({ product }) {
     <li className="rk">
       <span className="rk-num" aria-hidden="true">{String(product.rank).padStart(2, '0')}</span>
       <Link to={`/p/${product.id}`} className="rk-img">
-        <Photo item={product} label="product shot" />
+        <Photo item={product} label="product shot" tag="Sample photo" />
         <span className="badge">{product.label}</span>
       </Link>
       <div className="rk-body">
@@ -242,7 +244,7 @@ export function Layout({ children }) {
           <Link to="/how-we-pick#featured" onClick={close} className="hdr-partner">Partner with us</Link>
         </nav>
       </header>
-      <div className="proto-note">Concept prototype · products, prices and ratings are sample data</div>
+      <div className="proto-note">Concept prototype · products, prices and ratings are sample data · photos from Unsplash</div>
       <main>{children}</main>
       <footer className="ftr">
         <div className="ftr-grid">
