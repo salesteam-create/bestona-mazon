@@ -1,141 +1,101 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CATEGORIES, SPONSORED, RANKED, discount } from '../data/catalog.js'
-import { Row, DisclosureNote } from '../components.jsx'
-import { ProductImage, Icon } from '../icons.jsx'
-
-const SLIDES = [
-  {
-    eyebrow: 'Top 10 lists',
-    title: 'Only the 10 products worth buying',
-    body: 'Every department, narrowed to ten picks with a one-line reason for each.',
-    cta: { label: 'Browse departments', to: '/c/kitchen' },
-    tone: 'amber',
-    icons: ['fryer', 'bottle', 'fountain'],
-  },
-  {
-    eyebrow: "Today's Deals",
-    title: 'Top 10 picks, now on sale',
-    body: 'Ranked products with a price drop on Amazon today.',
-    cta: { label: 'See all deals', to: '/deals' },
-    tone: 'coral',
-    icons: ['vacuum', 'dryer', 'backpack'],
-  },
-  {
-    eyebrow: 'New list',
-    title: 'The 10 best coffees and teas',
-    body: 'Beans, pods, cold brew and loose leaf, tested against the bestsellers.',
-    cta: { label: 'See the list', to: '/c/coffee-tea' },
-    tone: 'dark',
-    icons: ['beans', 'cup', 'leaf'],
-  },
-]
-
-function Hero() {
-  const [i, setI] = useState(0)
-  const [paused, setPaused] = useState(false)
-  useEffect(() => {
-    if (paused) return
-    const t = setInterval(() => setI((x) => (x + 1) % SLIDES.length), 6000)
-    return () => clearInterval(t)
-  }, [paused])
-  const s = SLIDES[i]
-  return (
-    <section
-      className={`hero tone-${s.tone}`}
-      aria-roledescription="carousel"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <button className="hero-arrow left" aria-label="Previous slide" onClick={() => setI((i + SLIDES.length - 1) % SLIDES.length)}>‹</button>
-      <div className="hero-inner" key={i}>
-        <div className="hero-copy">
-          <span className="hero-eyebrow">{s.eyebrow}</span>
-          <h1>{s.title}</h1>
-          <p>{s.body}</p>
-          <Link className="btn btn-hero" to={s.cta.to}>{s.cta.label}</Link>
-        </div>
-        <div className="hero-art" aria-hidden="true">
-          {s.icons.map((n, k) => <span key={n} className={`hero-bubble b${k}`}><Icon name={n} size={k === 0 ? 120 : 76} strokeWidth={1.4} /></span>)}
-        </div>
-      </div>
-      <button className="hero-arrow right" aria-label="Next slide" onClick={() => setI((i + 1) % SLIDES.length)}>›</button>
-      <div className="hero-dots">
-        {SLIDES.map((_, k) => <button key={k} className={k === i ? 'on' : ''} aria-label={`Slide ${k + 1}`} onClick={() => setI(k)} />)}
-      </div>
-    </section>
-  )
-}
-
-function CategoryCard({ cat }) {
-  const four = cat.products.slice(0, 4)
-  return (
-    <article className="hcard">
-      <h2>Top 10 in {cat.name}</h2>
-      <div className="hcard-grid">
-        {four.map((p) => (
-          <Link key={p.id} to={`/p/${p.id}`} className="hcard-item">
-            <ProductImage product={p} size="sm" />
-            <span className="hcard-label">#{p.rank} {p.name.split(',')[0]}</span>
-          </Link>
-        ))}
-      </div>
-      <Link to={`/c/${cat.slug}`} className="see-more">See the full top 10</Link>
-    </article>
-  )
-}
+import { DEPARTMENTS, LIVE_SUBS, ALL_SUBS, UPDATED, subBySlug } from '../data/catalog.js'
+import { DeptCircle, DeptCard, ListCard, Photo, DisclosureNote } from '../components.jsx'
 
 export default function Home() {
-  const deals = RANKED.filter((p) => discount(p) >= 15).sort((a, b) => discount(b) - discount(a))
-  const mostReviewed = [...RANKED].sort((a, b) => b.reviews - a.reviews).slice(0, 12)
-
+  const spotlight = subBySlug('air-fryers')
   return (
     <div className="home">
-      <Hero />
-      <div className="home-body">
-        <div className="hcard-row">
-          {CATEGORIES.slice(0, 4).map((c) => <CategoryCard key={c.slug} cat={c} />)}
+      <section className="hero">
+        <div className="hero-main">
+          <div className="hero-copy">
+            <span className="eyebrow">Top 10 lists · Updated {UPDATED}</span>
+            <h1>The ten products worth buying, in every category.</h1>
+            <p>We narrow Amazon's bestsellers down to ten, and tell you why each one made the list. No endless scrolling.</p>
+          </div>
+          <div className="hero-actions">
+            <a href="#departments" className="pill pill-dark pill-lg">Browse categories</a>
+            <Link to="/how-we-pick" className="pill pill-outline pill-lg">How we pick</Link>
+          </div>
         </div>
+        <div className="hero-side">
+          <Link to={`/list/${spotlight.slug}`} className="hero-panel hero-photo">
+            <Photo item={spotlight} label="lifestyle photo" className="hero-photo-bg" />
+            <span className="hero-panel-text">
+              <strong>New list: {spotlight.title.replace('The 10 best', 'the 10 best')}</strong>
+              <span>Basket size, even cooking and easy cleaning, compared</span>
+            </span>
+          </Link>
+          <Link to="/how-we-pick" className="hero-panel hero-dark">
+            <span className="hero-panel-text">
+              <strong>Honest by design</strong>
+              <span>Sponsored picks are always labelled and never ranked</span>
+            </span>
+            <span className="amber-link">Our method →</span>
+          </Link>
+        </div>
+      </section>
 
-        <Row
-          title="Featured Picks from our partner brands"
-          note="Sponsored"
-          link={{ label: 'How sponsored picks work', to: '/how-we-pick#featured' }}
-          products={SPONSORED}
-        />
+      <section className="block" id="departments">
+        <div className="block-head">
+          <h2>Shop by category</h2>
+          <a href="#all-departments" className="u-link">All departments</a>
+        </div>
+        <div className="circles">
+          {DEPARTMENTS.map((d) => <DeptCircle key={d.slug} dept={d} />)}
+        </div>
+      </section>
 
-        <Row title="Today's Deals on Top 10 picks" link={{ label: 'See all deals', to: '/deals' }} products={deals} />
+      <section className="block">
+        <div className="block-head">
+          <div className="block-title">
+            <h2>Latest Top 10 lists</h2>
+            <span className="mono-chip">{LIVE_SUBS.length} lists · {ALL_SUBS.length} categories</span>
+          </div>
+        </div>
+        <div className="lc-grid">
+          {LIVE_SUBS.map((s) => <ListCard key={s.slug} sub={s} />)}
+        </div>
+      </section>
 
-        <div className="hcard-row">
-          {CATEGORIES.slice(4).map((c) => <CategoryCard key={c.slug} cat={c} />)}
-          <article className="hcard hcard-trust">
-            <h2>Why shop our Top 10s?</h2>
-            <ul>
-              <li><strong>10 picks</strong> per department, no endless scrolling</li>
-              <li><strong>1 reason</strong> written for every product</li>
-              <li><strong>Sponsored</strong> picks always labelled and kept out of the ranking</li>
-            </ul>
-            <Link to="/how-we-pick" className="see-more">How we pick</Link>
-          </article>
-          <article className="hcard hcard-news">
+      <section className="block" id="all-departments">
+        <div className="block-head">
+          <h2>Browse by department</h2>
+        </div>
+        <div className="dc-grid">
+          {DEPARTMENTS.map((d) => <DeptCard key={d.slug} dept={d} />)}
+        </div>
+      </section>
+
+      <section className="block">
+        <div className="how">
+          <div className="how-intro">
+            <span className="eyebrow eyebrow-amber">How our lists work</span>
+            <h2>Built the same way, every time.</h2>
+            <Link to="/how-we-pick" className="pill pill-amber">Read our method</Link>
+          </div>
+          <ol className="how-steps">
+            <li><strong>Start from real demand</strong><span>We begin with Amazon's bestsellers in each category.</span></li>
+            <li><strong>Filter for quality</strong><span>We drop products with weak long-term ratings or repeated complaints.</span></li>
+            <li><strong>Rank and explain</strong><span>Ten picks, each with a short reason it made the list.</span></li>
+            <li><strong>Label what's paid</strong><span>One Featured Pick per list, clearly marked and kept out of the ranking.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section className="block">
+        <div className="news">
+          <div>
             <h2>Get new Top 10s first</h2>
             <p>One short email when a list changes.</p>
-            <form onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="you@example.com" aria-label="Email address" />
-              <button className="btn btn-buy btn-block" type="submit">Subscribe</button>
-            </form>
-            <span className="small-note">Visual only in the prototype.</span>
-          </article>
+          </div>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <input type="email" placeholder="you@example.com" aria-label="Email address" />
+            <button className="pill pill-amber" type="submit">Subscribe</button>
+          </form>
         </div>
-
-        <Row title="Most-reviewed products across our lists" products={mostReviewed} />
-
-        {CATEGORIES.map((c) => (
-          <Row key={c.slug} title={`Top 10 in ${c.name}`} link={{ label: 'See the list', to: `/c/${c.slug}` }} products={c.products} />
-        ))}
-
-        <DisclosureNote className="home-disclosure" />
-      </div>
+        <DisclosureNote />
+      </section>
     </div>
   )
 }

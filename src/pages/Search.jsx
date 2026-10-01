@@ -1,66 +1,34 @@
 import { useSearchParams, Link } from 'react-router-dom'
-import { RANKED, SPONSORED, CATEGORIES, categoryBySlug, discount, productById } from '../data/catalog.js'
-import { Breadcrumbs, Results, ProductCard, useSaved } from '../components.jsx'
+import { ALL_SUBS, DEPARTMENTS } from '../data/catalog.js'
+import { ListCard } from '../components.jsx'
 
-const match = (needle) => (p) =>
-  [p.name, p.brand, p.category.name, p.reason, ...p.bullets].some((t) => t.toLowerCase().includes(needle))
-
+// Search returns categories, not products, so products only ever appear inside a list.
 export default function Search() {
   const [params] = useSearchParams()
-  const q = (params.get('q') || '').trim()
-  const cat = categoryBySlug(params.get('cat'))
-  const needle = q.toLowerCase()
-  const inScope = (p) => !cat || p.category.slug === cat.slug
-  const ranked = RANKED.filter(inScope).filter(match(needle))
-  const sponsored = SPONSORED.filter(inScope).filter(match(needle))
-  const label = [q && `"${q}"`, cat && `in ${cat.name}`].filter(Boolean).join(' ')
+  const raw = (params.get('q') || '').trim()
+  const words = raw.toLowerCase().split(/\s+/).filter(Boolean).map((w) => w.replace(/s$/, ''))
+  const hit = (s) => {
+    const hay = [s.name, s.department.name, s.title || '', s.intro || '', ...(s.products || []).map((x) => x.name)].join(' ').toLowerCase()
+    return words.length > 0 && words.every((w) => hay.includes(w))
+  }
+  const results = ALL_SUBS.filter(hit).sort((a, b) => b.live - a.live)
 
   return (
-    <div className="page page-inner">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Search' }]} />
-      {ranked.length + sponsored.length ? (
-        <Results key={q + (cat?.slug || '')} title={label || 'all Top 10 picks'} products={ranked} sponsored={sponsored.slice(0, 1)} showCategories defaultSort="rating" />
-      ) : (
-        <div className="empty">
-          <h1>No results for {label}</h1>
-          <p>Try "coffee", "dog", "blender" or browse a department:</p>
-          <div className="cat-chips center">
-            {CATEGORIES.map((c) => <Link key={c.slug} className="chip" to={`/c/${c.slug}`}>{c.name}</Link>)}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-export function Deals() {
-  const deals = RANKED.filter((p) => discount(p) > 0)
-  return (
-    <div className="page page-inner">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: "Today's Deals" }]} />
-      <div className="deals-head">
-        <h1>Today's Deals</h1>
-        <p>Top 10 picks with a price drop on Amazon today. Sample prices as shown on 30 Sep 2026.</p>
+    <div className="page">
+      <div className="results-head">
+        <span className="soft small">Search</span>
+        <span className="results-count">
+          {raw ? <><strong>{results.length} {results.length === 1 ? 'category' : 'categories'}</strong> for "{raw}"</> : 'Search our Top 10 lists'}
+        </span>
       </div>
-      <Results title="Today's Deals" products={deals} showCategories defaultSort="rank" />
-    </div>
-  )
-}
-
-export function Saved() {
-  const { ids } = useSaved()
-  const items = ids.map(productById).filter(Boolean)
-  return (
-    <div className="page page-inner">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Saved' }]} />
-      <h1>Your saved list</h1>
-      <p className="muted">Saved in this browser only. Tap the heart on any product to add it.</p>
-      {items.length ? (
-        <div className="pgrid pgrid-wide">{items.map((p) => <ProductCard key={p.id} product={p} />)}</div>
+      {results.length ? (
+        <div className="lc-grid lc-grid-4">{results.map((s) => <ListCard key={s.slug} sub={s} />)}</div>
       ) : (
         <div className="empty">
-          <p>Nothing saved yet.</p>
-          <Link to="/" className="btn btn-buy">Start browsing</Link>
+          <p>{raw ? 'No categories match that yet.' : 'Try a product type, like "coffee" or "dog bed".'} Or browse a department:</p>
+          <div className="chip-row">
+            {DEPARTMENTS.map((d) => <Link key={d.slug} to={`/d/${d.slug}`} className="chip">{d.name}</Link>)}
+          </div>
         </div>
       )}
     </div>

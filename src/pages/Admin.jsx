@@ -1,4 +1,4 @@
-import { ADMIN_SLOTS, CATEGORIES } from '../data/catalog.js'
+import { ADMIN_SLOTS, LIVE_SUBS } from '../data/catalog.js'
 import { useToast } from '../components.jsx'
 
 // Wireframe only: shows how the client would manage Featured Pick slots.
@@ -10,13 +10,13 @@ export default function Admin() {
   }
 
   return (
-    <div className="page page-inner wf">
+    <div className="wrap page wf">
       <div className="wf-banner">
         <strong>Concept wireframe</strong> · Featured slot admin. Not functional in the prototype.
       </div>
 
       <h1>Featured Pick slots</h1>
-      <p className="muted">Assign a seller client's product to a category's Featured Pick slot and track clicks.</p>
+      <p className="muted">Assign a seller client's product to the Featured Pick slot of a Top 10 list and track clicks.</p>
 
       <div className="wf-stats">
         <div className="wf-box"><span className="wf-label">Active slots</span><strong>6 / 6</strong></div>
@@ -30,7 +30,7 @@ export default function Admin() {
           <label>Category
             <select defaultValue="">
               <option value="" disabled>Select category</option>
-              {CATEGORIES.map((c) => <option key={c.slug}>{c.name}</option>)}
+              {LIVE_SUBS.map((s) => <option key={s.slug}>{s.department.name} &gt; {s.name}</option>)}
             </select>
           </label>
           <label>Product ASIN
