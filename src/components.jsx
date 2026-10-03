@@ -93,7 +93,7 @@ export function DisclosureNote({ className = '' }) {
 export function SponsoredTag() {
   return (
     <Link to="/how-we-pick#featured" className="sp-tag">
-      Featured Pick · Sponsored <span aria-hidden="true">ⓘ</span>
+      Featured Pick <span aria-hidden="true">ⓘ</span>
     </Link>
   )
 }
@@ -152,7 +152,7 @@ export function DeptCard({ dept }) {
 
 export function FeaturedBlock({ product }) {
   return (
-    <section className="feat" aria-label="Featured Pick, sponsored">
+    <section className="feat" aria-label="Featured Pick, paid placement">
       <div className="feat-top">
         <SponsoredTag />
         <span className="soft small">Paid placement · outside the ranking</span>

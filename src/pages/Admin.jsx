@@ -44,8 +44,8 @@ export default function Admin() {
             <label>End date<input type="date" /></label>
           </div>
           <label>Label shown on site
-            <select defaultValue="Featured Pick · Sponsored">
-              <option>Featured Pick · Sponsored</option>
+            <select defaultValue="Featured Pick">
+              <option>Featured Pick</option>
             </select>
           </label>
           <div className="wf-actions">

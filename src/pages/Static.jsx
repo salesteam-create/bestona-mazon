@@ -28,7 +28,7 @@ export function HowWePick() {
       </ol>
 
       <h2 id="featured">How Featured Picks work</h2>
-      <p><span className="sponsored-tag static">Featured Pick · Sponsored</span></p>
+      <p><span className="sp-tag static">Featured Pick</span></p>
       <p>
         Some brands pay to appear as a Featured Pick at the top of a Top 10 list. Featured Picks are always labelled,
         shown in their own block above the ranked list, and are never counted in the Top 10. Paying for a Featured
@@ -57,7 +57,7 @@ export function Disclosure() {
         may earn a commission. This does not change the price you pay.
       </p>
       <p>
-        Featured Picks are paid placements from brands we work with. They are labelled "Featured Pick · Sponsored"
+        Featured Picks are paid placements from brands we work with. They are labelled "Featured Pick"
         and sit outside the independent rankings.
       </p>
 

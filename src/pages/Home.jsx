@@ -32,7 +32,7 @@ export default function Home() {
           <Link to="/how-we-pick" className="hero-panel hero-dark">
             <span className="hero-panel-text">
               <strong>Honest by design</strong>
-              <span>Sponsored picks are always labelled and never ranked</span>
+              <span>Featured Picks are always labelled and never ranked</span>
             </span>
             <span className="amber-link">Our method →</span>
           </Link>
